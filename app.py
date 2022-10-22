@@ -7,11 +7,11 @@ from firebase_admin import credentials, firestore
 import dash_bootstrap_components as dbc
 
 # TẢI DỮ LIỆU TỪ FIRESTORE
-cred = credentials.Certificate("./project-ltptdl1-firebase-adminsdk-q0v1u-7d4b6980ee.json")
+cred = credentials.Certificate("./iuh-20116361-32f4b-firebase-adminsdk-2h6n6-095aa29e02.json")
 app = firebase_admin.initialize_app(cred)
 dbFireStore = firestore.client()
 
-queryResults = list(dbFireStore.collection(u'tbl-20050981').stream())
+queryResults = list(dbFireStore.collection(u'tbl-20116361').stream())
 listQueryResults = list(map(lambda x : x.to_dict(), queryResults))
 df = pd.DataFrame(listQueryResults)
 
@@ -37,9 +37,11 @@ app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP, '../assets/style.css'])
 server = app.server
 app.title = "Finance Data Analysis"
 
+# Doanh số bán hàng theo năm
 figDoanhSoBanHangTheoNam = px.bar(dfGroup, x='YEAR_ID', y="SALES",
                                   title='Doanh số bán hàng theo năm', color='YEAR_ID',
                                   labels={ 'SALES': 'Doanh số'})
+# Lợi nhuận bán hàng theo năm
 figLoiNhuanBanHangTheoNam = px.line(dfGroup, x='YEAR_ID', y="LoiNhuan",
                                     title='Lợi nhuận bán hàng theo năm',
                                     labels={
@@ -48,23 +50,27 @@ figLoiNhuanBanHangTheoNam = px.line(dfGroup, x='YEAR_ID', y="LoiNhuan",
                                     
                                     )
 
-
+# Tỉ lệ đóng góp của doanh số theo từng danh mục trong từng năm
 figTileDoanhSo = px.sunburst(df, path=['YEAR_ID', 'CATEGORY'], values='SALES',
                              color='SALES',
                              labels={'parent': 'Năm', 'id': 'Year / month','SALES': 'Doanh số'},
                              title='Tỉ lệ đóng góp của doanh số theo từng danh mục trong từng năm')
 
+# Tỉ lệ đóng góp của lợi nhuận theo từng danh mục trong từng năm
 figTileLoiNhuan = px.sunburst(df, path=['YEAR_ID', 'CATEGORY'], values='LoiNhuan',
                               color='LoiNhuan',
                               labels={'parent': 'Năm', 'id': 'Year / month', 'LoiNhuan': 'Lợi nhuận'},
                               title='Tỉ lệ đóng góp của lợi nhuận theo từng danh mục trong từng năm')
 
-
+# Doanh số
 doanhso = round(df["SALES"].sum(), 2) 
+# Lợi nhuận
 loinhuan = round(df['LoiNhuan'].sum(), 2)
 
+# Top doanh số
 topDoanhSo = df.groupby('CATEGORY').sum()['SALES'].max()
 
+# Top lợi nhuận
 topLoiNhuan =df.groupby('CATEGORY').sum()['LoiNhuan'].max()
 
 
@@ -76,10 +82,10 @@ app.layout = dbc.Container(
                 html.Nav(
                     className="col-12 title-table navbar navbar-light bg-info text-center mb-0",
                     children=html.H2(
-                        children=["DANH MỤC SẢN PHÂM TIỀM NĂNG",
+                        children=["DANH MỤC SẢN PHẨM TIỀM NĂNG",
 
                                   html.Br(), html.H5(
-                                      children="Nguyễn Quang Tú-20050981"
+                                      children="IUH-Hồ Trần Chí Tâm-20116361"
                                   )
                                   ],
                         className="col-12 navbar-brand text-center mb-0"
