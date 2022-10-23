@@ -7,11 +7,11 @@ from firebase_admin import credentials, firestore
 import dash_bootstrap_components as dbc
 
 # TẢI DỮ LIỆU TỪ FIRESTORE
-cred = credentials.Certificate("./iuh-20025251-933bd-firebase-adminsdk-j7n0e-5d3c9237a0.json")
+cred = credentials.Certificate("./iuh-20025251-sales\iuh-20025251-933bd-firebase-adminsdk-j7n0e-5d3c9237a0.json")
 app = firebase_admin.initialize_app(cred)
 dbFireStore = firestore.client()
 
-queryResults = list(dbFireStore.collection(u'tbl-20025251').stream())
+queryResults = list(dbFireStore.collection(u'tbl_20023851').stream())
 listQueryResults = list(map(lambda x : x.to_dict(), queryResults))
 df = pd.DataFrame(listQueryResults)
 
@@ -85,7 +85,7 @@ app.layout = dbc.Container(
                         children=["DANH MỤC SẢN PHẨM TIỀM NĂNG",
 
                                   html.Br(), html.H5(
-                                      children="IUH - Nguyễn Thị Kim Ngọc - 20025251"
+                                      children="IUH - Nguyễn Duy Tài - 20023851"
                                   )
                                   ],
                         className="col-12 navbar-brand text-center mb-0"
